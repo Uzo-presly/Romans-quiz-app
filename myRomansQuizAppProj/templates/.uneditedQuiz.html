@@ -1,0 +1,28 @@
+<!-- templates/quiz.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic Quiz</title>
+  <!-- ✅ Link to your custom CSS -->
+  <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body>
+  <h1>Take the Quiz</h1>
+  
+  <form action="/submit" method="post">
+    <!-- Email Input -->
+    <label>Email:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <!-- Start looping through each question -->
+    {% for q in questions %}
+      <label>{{ q.prompt }}</label><br>
+      <input type="text" name="question_{{ q.id }}" required><br><br>
+    {% endfor %}
+
+    <!-- Submit Button -->
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>

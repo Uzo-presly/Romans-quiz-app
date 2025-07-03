@@ -1,0 +1,45 @@
+<!-- templates/quiz.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Romans 2 Quiz</title>
+  <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body>
+  <h1>Romans 2 Quiz</h1>
+  <p>⏳ Time remaining: <span id="time">240</span> seconds</p>
+
+  <form action="/submit" method="post" id="quizForm">
+    <label>Email:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    {% for q in questions %}
+      <div class="question">
+        <p>Q{{ loop.index }}. {{ q.prompt }}</p>
+        <div class="answers">
+          <label><input type="radio" name="question_{{ q.id }}" value="0" required> {{ q.option_0 }}</label><br>
+          <label><input type="radio" name="question_{{ q.id }}" value="1"> {{ q.option_1 }}</label><br>
+          <label><input type="radio" name="question_{{ q.id }}" value="2"> {{ q.option_2 }}</label><br>
+          <label><input type="radio" name="question_{{ q.id }}" value="3"> {{ q.option_3 }}</label><br>
+        </div>
+      </div>
+      <br>
+    {% endfor %}
+
+    <button type="submit" id="submitBtn">Submit</button>
+  </form>
+
+  <script>
+    let timer = 240;
+    const interval = setInterval(() => {
+      timer--;
+      document.getElementById("time").textContent = timer;
+      if (timer <= 0) {
+        clearInterval(interval);
+        alert("Time's up! Submitting your quiz.");
+        document.getElementById("submitBtn").click();
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
