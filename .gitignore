@@ -2,9 +2,15 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
+*.pyo
+*.pyd
+#Google_sheet_logger_service_Account in .json format
+*.json
 
-# Environment variables
+# Environment variables with Secrets 
 .env
+.secrets/
 
 # Virtual environment
 venv/
@@ -21,6 +27,6 @@ instance/
 # macOS / Linux / Windows system files
 .DS_Store
 Thumbs.db
-
+.idea/
 # VS Code settings
 .vscode/

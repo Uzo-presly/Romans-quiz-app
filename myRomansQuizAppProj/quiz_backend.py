@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from models import Session, Question, UserAttempt
 from send_result_email import send_email
+from log_to_sheet import log_quiz_attempt
 from dotenv import load_dotenv
 from markupsafe import escape
 import re
@@ -61,6 +62,13 @@ def submit_quiz():
     attempt = UserAttempt(email=email, score=score)
     session.add(attempt)
     session.commit()
+
+    # Log to Google Sheet
+    try:
+        log_quiz_attempt(email, score)
+        print("✅ Logged to Google Sheets.")
+    except Exception as e:
+        print("❌ Failed to log to Sheets:", e)
 
     # Final message
     feedback += f"You scored {score} out of {total}.\n\nResults:\n{result_details}"

@@ -1,8 +1,8 @@
 # 📖 Bible Quiz App (Romans 2)
-
+```
 A simple interactive Bible quiz built with Flask, SQLite, and Bootstrap. Focuses on Romans Chapter 2.
 
-## 🌟 Features
+# 🌟 Features
 
 - Dynamic quiz questions from database
 - Email results to users using SMTP
@@ -10,9 +10,9 @@ A simple interactive Bible quiz built with Flask, SQLite, and Bootstrap. Focuses
 - Timer countdown (4 mins)
 - Bootstrap styled layout
 
-## 🚀 Run Locally
+# 🚀 Run Locally
 
-```bash
+bash
 git clone https://github.com/yourusername/bible-quiz-app.git
 cd bible-quiz-app
 python3 -m venv venv
@@ -20,6 +20,30 @@ source venv/bin/activate
 pip install -r requirements.txt
 python quiz_backend.py
 
+🔒 Common Patterns and What They Ignore using .gitignore
+Pattern	Meaning
+__pycache__/	Ignores Python bytecode cache folders
+*.pyc   	Ignores all compiled Python files
+.env    	Ignores your environment variable files
+.secrets/	Ignores the whole .secrets folder (e.g., service account files)
+*.sqlite3	Ignores any SQLite DB files (if you store DB locally)
+*.json       	Ignores all .json files (careful! this may hide useful ones too)
+venv/ or myvenv/	Ignores your Python virtual environment folders
+
+
+Additional Deployment Files Confirmed
+
+You've already:
+
+    Added render.yaml ✅
+
+    Created .gitignore ✅
+
+    Included LICENSE ✅
+
+    Populated README.md ✅
+
+    Used app.run(host="0.0.0.0", port=5000) ✅
 
 As much as possible, Uzo you want to avoid putting comments in html page to avoid reading error from flask.
 This is a major step into full-stack web development! Let’s take it one solid piece at a time.
