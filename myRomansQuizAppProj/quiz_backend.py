@@ -1,7 +1,8 @@
 # quiz_backend.py
 from flask import Flask, render_template, request, redirect, url_for
-from send_result_email import send_email
-from log_to_sheet import log_to_sheet
+from myRomansQuizAppProj.models import Session, Question, UserAttempt
+from myRomansQuizAppProj.send_result_email import send_email
+from myRomansQuizAppProj.log_to_sheet import log_to_sheet
 from dotenv import load_dotenv
 from datetime import datetime
 import os
