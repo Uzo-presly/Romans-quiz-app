@@ -2,7 +2,7 @@ import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-def log_to_sheet(email, score, total, ip_address="Unknown", browser_info="Unknown", timestamp="N/A"):
+def log_to_sheet(timestamp, ip_address, email, score, total, browser_info):
     """
     Logs quiz result to a Google Sheet with extra details.
     """
@@ -23,8 +23,8 @@ def log_to_sheet(email, score, total, ip_address="Unknown", browser_info="Unknow
         client = gspread.authorize(creds)
         sheet = client.open_by_key("1BRGQDn0kSZ9qrznIkl2JoM_qp-5xF_GikcenBM3BXDA").sheet1
 
-        sheet.append_row([email, score, total, timestamp, ip_address, browser_info])
-        print(f"✅ Logged to sheet: {email}, {score}/{total}, {ip_address}")
+        sheet.append_row([timestamp, ip_address, email, score, total, browser_info])
+        print(f"✅ Logged to sheet: {timestamp}, {ip_address}, {email}, {score}/{total}, {browser_info}")
 
     except Exception as e:
         print("❌ Failed to log to sheet:", e)
