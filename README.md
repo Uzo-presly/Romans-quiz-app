@@ -45,6 +45,61 @@ You've already:
 
     Used app.run(host="0.0.0.0", port=5000) ✅
 
+Please ensure .secrets/ is already listed in your .gitignore file, so it won’t be pushed to GitHub, and you get the following benefits:
+
+    ✅ Keeps your secret credentials safe.
+
+    ✅ Keeps your GitHub repo clean and shareable.
+
+    ✅ Works perfectly with your current testing setup.
+
+🛠 So, how does this translate for deployment to Render?
+
+Render does not care where your local .json file is.
+What matters is that you upload the .json file via Render's “Secret Files” section, and you access it in your code from /etc/secrets/filename.json.
+🔁 Best Practice Strategy:
+
+    Keep .json inside .secrets/ locally.
+    You already do this, and it's good.
+
+    Make your log_to_sheet.py dynamic, like this:
+
+    json_path = "/etc/secrets/true-oasis-449208-c6-27acdba00e47.json"
+    if not os.path.exists(json_path):
+        json_path = ".secrets/true-oasis-449208-c6-27acdba00e47.json"
+
+    This way it:
+
+        ✅ Works locally
+
+        ✅ Works on Render
+
+    Ensure .secrets/ stays in your .gitignore
+
+    When deploying to Render:
+
+        Go to Environment > Secret Files
+
+        Add the .json file there
+
+        Use the exact path: /etc/secrets/true-oasis-449208-c6-27acdba00e47.json
+
+💡 Summary
+Task	Recommended Action
+Local secrets	.secrets/ folder
+Ignore secrets in Git	Add .secrets/ to .gitignore (✔️ done)
+Render secrets	Upload to /etc/secrets/filename.json
+Python code path	Use adaptive path logic or hardcode /etc/secrets/... if only deploying
+✅ You’re now ready to:
+
+    git add .
+
+    git commit -m "Updated Google Sheets logger and dynamic secret handling"
+
+    git push origin main
+
+    Deploy from your Render dashboard (you’ve already selected the repo)
+
 As much as possible, Uzo you want to avoid putting comments in html page to avoid reading error from flask.
 This is a major step into full-stack web development! Let’s take it one solid piece at a time.
 🔍 First: What Does "Modularize" Mean?

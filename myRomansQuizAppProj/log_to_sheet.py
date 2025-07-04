@@ -1,25 +1,30 @@
+import os
 import gspread
-from google.oauth2.service_account import Credentials
-from datetime import datetime
+from oauth2client.service_account import ServiceAccountCredentials
 
-def log_to_sheet(email, score, total):
+def log_to_sheet(email, score, total, ip_address="Unknown", browser_info="Unknown", timestamp="N/A"):
+    """
+    Logs quiz result to a Google Sheet with extra details.
+    """
     try:
-        # Path to your .json key file
-        SERVICE_ACCOUNT_FILE = "myRomansQuizAppProj/.secrets/true-oasis-449208-c6-27acdba00e47.json"
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/drive"
+        ]
 
-        # Define scope
-        SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+        # Try Render deployment path first, fall back to local path
+        json_path = "/etc/secrets/true-oasis-449208-c6-27acdba00e47.json"
+        if not os.path.exists(json_path):
+            json_path = ".secrets/true-oasis-449208-c6-27acdba00e47.json"
 
-        # Authenticate using modern google-auth library
-        creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        creds = ServiceAccountCredentials.from_json_keyfile_name(json_path, scope)
         client = gspread.authorize(creds)
+        sheet = client.open_by_key("1BRGQDn0kSZ9qrznIkl2JoM_qp-5xF_GikcenBM3BXDA").sheet1
 
-        # Open Google Sheet by name
-        sheet = client.open("Romans2QuizLogger").sheet1
-
-        # Append the result
-        sheet.append_row([email, score, total, datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
-        print(f"✅ Logged to sheet: {email}, {score}/{total}")
+        sheet.append_row([email, score, total, timestamp, ip_address, browser_info])
+        print(f"✅ Logged to sheet: {email}, {score}/{total}, {ip_address}")
 
     except Exception as e:
         print("❌ Failed to log to sheet:", e)
