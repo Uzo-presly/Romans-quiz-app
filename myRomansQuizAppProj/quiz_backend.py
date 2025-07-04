@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from models import Session, Question, UserAttempt
 from send_result_email import send_email
 from log_to_sheet import log_to_sheet
@@ -9,6 +9,16 @@ import re
 
 load_dotenv()
 app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return redirect(url_for("quiz"))  # Redirect to quiz page
+
+@app.route("/quiz", methods=["GET"])
+def quiz():
+    session = Session()
+    questions = session.query(Question).all()
+    return render_template("quiz.html", questions=questions)
 
 @app.route("/submit", methods=["POST"])
 def submit_quiz():
@@ -23,15 +33,12 @@ def submit_quiz():
     score = 0
     total = 0
 
-    # ✅ NEW: Extract values explicitly
+    # ✅ Extract contextual info
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     ip_address = request.remote_addr or "Unknown IP"
     browser_info = request.user_agent.string or request.headers.get('User-Agent', "Unknown browser")
 
-    # 📩 Feedback to be shown in browser and email
-    feedback = f"Hello dear,\n\nYou took the Romans Chapter 2 Quiz.\n"
-    feedback += f"📅 Date/Time: {timestamp}\n"
-    feedback += f"🧠 IP Address: {ip_address}\n🧠 Browser Info: {browser_info}\n\n"
+    feedback = f"Hello dear,\n\nYou took the Romans Chapter 2 Quiz.\n📅 Date/Time: {timestamp}\n"
     result_details = ""
 
     for index, q in enumerate(questions, start=1):
@@ -50,23 +57,22 @@ def submit_quiz():
             else:
                 result_details += f"❌\nCorrect answer: {correct_answer_text}\n\n"
 
-    # Save to DB
+    # Save attempt to DB
     attempt = UserAttempt(email=email, score=score)
     session.add(attempt)
     session.commit()
 
-    # ✅ Log to Google Sheet with all fields
+    # ✅ Correct: Call log_to_sheet with all arguments in correct order
     try:
-        log_to_sheet(email, score, total, ip_address, browser_info, timestamp)
+        log_to_sheet(timestamp, ip_address, email, score, total, browser_info)
         print("✅ Logged to Google Sheets.")
     except Exception as e:
         print("❌ Failed to log to Sheets:", e)
 
-    # Final feedback message
-    feedback += f"📊 You scored {score} out of {total}.\n\n📝 Results:\n{result_details}"
-    feedback += "📖 Let reading God's Word—the holy Bible—be your daily experience.\n(Psalm 1:1–3)\n\n🙏 Thanks for taking the quiz!"
+    # 📩 Final feedback message
+    feedback += f"\n📊 You scored {score} out of {total}.\n\n📝 Results:\n{result_details}"
+    feedback += "\n📖 Let reading God's Word—the holy Bible—be your daily experience.\n(Psalm 1:1–3)\n\n🙏 Thanks for taking the quiz!"
 
-    # Send result via email
     try:
         send_email(email, "Your Romans chapter 2 Quiz Result", feedback)
         print("✅ Email sent successfully.")

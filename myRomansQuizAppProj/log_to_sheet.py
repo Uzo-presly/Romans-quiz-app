@@ -1,6 +1,7 @@
 import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
 
 def log_to_sheet(timestamp, ip_address, email, score, total, browser_info):
     """
@@ -14,13 +15,13 @@ def log_to_sheet(timestamp, ip_address, email, score, total, browser_info):
             "https://www.googleapis.com/auth/drive"
         ]
 
-        # Try Render deployment path first, fall back to local path
-        json_path = "/etc/secrets/true-oasis-449208-c6-27acdba00e47.json"
-        if not os.path.exists(json_path):
-            json_path = ".secrets/true-oasis-449208-c6-27acdba00e47.json"
+        credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+        if not credentials_path:
+            raise Exception("GOOGLE_APPLICATION_CREDENTIALS not set.")
 
-        creds = ServiceAccountCredentials.from_json_keyfile_name(os.environ["GOOGLE_APPLICATION_CREDENTIALS"], scope)
+        creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
         client = gspread.authorize(creds)
+
         sheet = client.open_by_key("1BRGQDn0kSZ9qrznIkl2JoM_qp-5xF_GikcenBM3BXDA").sheet1
 
         sheet.append_row([timestamp, ip_address, email, score, total, browser_info])
