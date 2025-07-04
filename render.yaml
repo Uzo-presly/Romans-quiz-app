@@ -4,17 +4,20 @@ services:
   - type: web
     name: romans2-quiz-app
     env: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn myRomansQuizAppProj.quiz_backend:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.12
-      - key: GOOGLE_APPLICATION_CREDENTIALS
-        value: myRomansQuizAppProj/.secrets/true-oasis-449208-c6-27acdba00e47.json
       - key: PORT
         value: 10000
       - key: SENDER_EMAIL
         value: YOUR_EMAIL@example.com
       - key: APP_PASSWORD
         value: YOUR_APP_PASSWORD_HERE
-      
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        Value: /etc/secrets/true-oasis-449208-c6-27acdba00e47.json      
+     secretFiles:
+       - name: true-oasis-449208-c6-27acdba00e47.json
+         path: /etc/secrets/true-oasis-449208-c6-27acdba00e47.json
