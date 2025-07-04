@@ -11,7 +11,7 @@ if os.environ.get("RENDER", "").lower() == "true":
     db_path = "/tmp/quiz.db"  # ✅ Writable in Render
 else:
     db_path = os.path.join(os.path.dirname(__file__), "quiz.db")  # ✅ Local path
-engine = create_engine("sqlite:////home/uzochi/Documents/theBibleProject/myRomansQuizAppProj/quiz.db")
+engine = create_engine("sqlite:///quiz.db")
 Session = sessionmaker(bind=engine)
 
 
