@@ -14,6 +14,20 @@ except ModuleNotFoundError:
     # ✅ For local testing
     from models import Session, Question, UserAttempt
 
+try:
+    # For deployment on Render
+    from myRomansQuizAppProj.send_result_email import send_email
+except ModuleNotFoundError:
+    # For local testing
+    from send_result_email import send_email
+
+try:
+    # For deployment on Render
+    from myRomansQuizAppProj.log_to_sheet import log_to_sheet
+except ModuleNotFoundError:
+    # For local testing
+    from log_to_sheet import log_to_sheet
+
 load_dotenv()
 app = Flask(__name__)
 
