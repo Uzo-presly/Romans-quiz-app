@@ -30,3 +30,4 @@ Thumbs.db
 .idea/
 # VS Code settings
 .vscode/
+*.swp
