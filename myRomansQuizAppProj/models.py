@@ -1,12 +1,19 @@
 # models.py
+import os
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+Base = declarative_base()
+
 # SQLAlchemy setup
-DATABASE_URL = "sqlite:///myRomansQuizAppProj/quiz.db"
+# Decide DB location
+if os.environ.get("RENDER", "").lower() == "true":
+    db_path = "/tmp/quiz.db"  # ✅ Writable in Render
+else:
+    db_path = os.path.join(os.path.dirname(__file__), "quiz.db")  # ✅ Local path
 engine = create_engine("sqlite:////home/uzochi/Documents/theBibleProject/myRomansQuizAppProj/quiz.db")
 Session = sessionmaker(bind=engine)
-Base = declarative_base()
+
 
 # Question Table
 class Question(Base):
