@@ -5,8 +5,10 @@ from datetime import datetime
 
 def log_to_sheet(timestamp, ip_address, email, score, total, browser_info):
     """
-    Logs quiz result to a Google Sheet with extra details.
-    """
+    Logs quiz result to a Google Sheet with extra details."""
+    if os.environ.get("ENABLE_SHEETS_LOGGING", "false").lower() != "true":
+        print("🔕 Google Sheets logging is disabled.")
+        return   
     try:
         scope = [
             "https://spreadsheets.google.com/feeds",
