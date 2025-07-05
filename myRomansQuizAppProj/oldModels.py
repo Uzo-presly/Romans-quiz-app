@@ -1,5 +1,4 @@
 # models.py
-# Use PostgreSQL if DATABASE_URL is defined
 import os
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -7,9 +6,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 Base = declarative_base()
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///quiz.db")
-engine = create_engine(DATABASE_URL)
-
 
 # SQLAlchemy setup
 # Decide DB location
@@ -18,7 +14,7 @@ if os.environ.get("RENDER", "").lower() == "true":
 else:
     db_path = os.path.join(os.path.dirname(__file__), "quiz.db")  # ✅ Local path
 # SQLAlchemy setup
-#DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
     # ✅ Use PostgreSQL on Render
