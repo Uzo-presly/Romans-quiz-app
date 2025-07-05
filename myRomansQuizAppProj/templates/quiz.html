@@ -39,7 +39,7 @@
   </form>
 
   <script>
-    let timer = 240;
+    let timer = 360;
     const interval = setInterval(() => {
       timer--;
       document.getElementById("time").textContent = timer;
@@ -50,5 +50,59 @@
       }
     }, 1000);
   </script>
+<!-- 📢 Share This Romans 2 Quiz -->
+<div style="margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+  <h3 style="margin-bottom: 15px;">🙏 Enjoyed the quiz? Please share with friends and family!</h3>
+
+  <!-- 🔗 Copy Link -->
+  <div style="margin-bottom: 15px;">
+    <input type="text"
+           value="https://romans2-quiz-app.onrender.com"
+           id="quizLink"
+           readonly
+           style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+    <button onclick="copyQuizLink()"
+            style="padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 5px;">
+      📋 Copy Link
+    </button>
+  </div>
+
+  <!-- 🔗 Social Share Buttons -->
+  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <!-- WhatsApp -->
+    <a href="https://api.whatsapp.com/send?text=Try%20this%20Romans%202%20Bible%20Quiz!%20https%3A%2F%2Fromans2-quiz-app.onrender.com"
+       target="_blank"
+       style="text-decoration: none; background-color: #25D366; color: white; padding: 10px 15px; border-radius: 5px;">
+      📱 WhatsApp
+    </a>
+
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fromans2-quiz-app.onrender.com"
+       target="_blank"
+       style="text-decoration: none; background-color: #1877F2; color: white; padding: 10px 15px; border-radius: 5px;">
+      📘 Facebook
+    </a>
+
+    <!-- Telegram -->
+    <a href="https://t.me/share/url?url=https%3A%2F%2Fromans2-quiz-app.onrender.com&text=Try%20this%20Romans%202%20Bible%20Quiz!"
+       target="_blank"
+       style="text-decoration: none; background-color: #0088cc; color: white; padding: 10px 15px; border-radius: 5px;">
+      ✈️ Telegram
+    </a>
+  </div>
+</div>
+
+<!-- 🧠 Clipboard Script -->
+<script>
+  function copyQuizLink() {
+    const copyText = document.getElementById("quizLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+    navigator.clipboard.writeText(copyText.value)
+      .then(() => alert("✅ Quiz link copied to clipboard!"))
+      .catch(err => alert("❌ Failed to copy: " + err));
+  }
+</script>
+
 </body>
 </html>
